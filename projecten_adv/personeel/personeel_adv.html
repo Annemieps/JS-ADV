@@ -24,38 +24,38 @@
 
             /*++++++++++++++++OBJECTEN+++++++++++++++++++*/
             //literal
-            var paul = {
-                naam: "Paul",
-                geslacht: "m",
-                leeftijd: 50,
-                geboorteDatum: new Date(1960, 9, 12),
-                hobbies: ["tennis", "zwemmen", "videogames"],
-                gehuwd: true,
-                kinderen: [
-                    {naam: "Anthony",
-                        gewicht: 36,
-                        gehuwd: false,
-                        geboorteDatum: new Date(1999, 1, 31)
-                    },
-                    {naam: "Leen",
-                        gewicht: 65,
-                        gehuwd: false,
-                        geboorteDatum: new Date(1989, 11, 7)
-                    }
-                ],
-                spreek: function () {
-                    alert("hallo, " + this.naam + " hier, ik heb "
-                            + this.kinderen.length + " kinderen");
-                }
-            };
+//            var paul = {
+//                naam: "Paul",
+//                geslacht: "m",
+//                leeftijd: 50,
+//                geboorteDatum: new Date(1960, 9, 12),
+//                hobbies: ["tennis", "zwemmen", "videogames"],
+//                gehuwd: true,
+//                kinderen: [
+//                    {naam: "Anthony",
+//                        gewicht: 36,
+//                        gehuwd: false,
+//                        geboorteDatum: new Date(1999, 1, 31)
+//                    },
+//                    {naam: "Leen",
+//                        gewicht: 65,
+//                        gehuwd: false,
+//                        geboorteDatum: new Date(1989, 11, 7)
+//                    }
+//                ],
+//                spreek: function () {
+//                    alert("hallo, " + this.naam + " hier, ik heb "
+//                            + this.kinderen.length + " kinderen");
+//                }
+//            };
             //Een andere manier om een object aan te maken is een instantie afleiden van de Object
             //constructor functie:
             //met constructor
-            var veerle = new Object();
-            veerle.naam = "Veerle";
-            veerle.geslacht = "v";
-            veerle.gehuwd = true;
-            veerle.geboortedatum = new Date(1964, 5, 11);
+//            var veerle = new Object();
+//            veerle.naam = "Veerle";
+//            veerle.geslacht = "v";
+//            veerle.gehuwd = true;
+//            veerle.geboortedatum = new Date(1964, 5, 11);
 
             /* ++++++++++++++++CONSTRUCTORS+++++++++++++++++++ */
             /**** Persoon Class *****/
@@ -67,16 +67,106 @@
                 this.geslacht = sGeslacht;
             }
 
+            // augmentation 
+            Persoon.prototype.gehuwd = false; 
+            Persoon.prototype.moederTaal = "Nederlands";  
+            Persoon.prototype.info  = function () {
+                return "Ik ben " + this.naam + ", " + this.leeftijd + " jaar, \n mijn moedertaal is " + this.moederTaal + ".";
+            };
+            Persoon.prototype.spreek = function () { 
+                console.log(this.info()); 
+            }; 
+ 
+            /**** Cursist Class *****/ 
+            //aOpl, een array van opleidingen, en tutor, de tutor voor de opleidingsperiode
+            function Cursist(naam, leeftijd, geslacht, aOpl, oTutor) { 
+                //De JS functie call laat je toe een andere functie (Persoon()) toe te passen op een willekeurig object
+                Persoon.call(this, naam, leeftijd, geslacht);
+                this.opleidingen   = aOpl; 
+                this.tutor     = oTutor; 
+            } 
+            //hiermee erft cursisst alles van persoon
+            Cursist.prototype   = new Persoon(); 
+            Cursist.prototype.opleider = "vdab"; 
+                        Cursist.prototype.voegOpleidingToe = function (opleiding) { 
+                                this.opleidingen.push(opleiding); 
+                        };
+            Cursist.prototype.spreek = function () { 
+                  var sOpl =  " Ik volg de opleidingen "; 
+                  for (var i = 0; i < this.opleidingen.length; i++) { 
+                       sOpl += this.opleidingen[i] + ","; 
+                   } 
+                  sOpl += " mijn tutor is "  +  this.tutor; 
+                  console.log(this.info() + sOpl); 
+              };
+
+            //instanties deel 2 
+            var benny = new Cursist("Benny", 28, "m", ["access", "excel"], "Jan" ); 
+
+            //uitvoeren deel 2 
+            benny.spreek(); 
+            eOutput.innerHTML = enumerateHTML(benny); 
+
+
+             /**** Instructeur Class *****/ 
+            function Instructeur(sNaam, nLeeftijd, sGeslacht, sVak, nStartJaar ) { 
+                  //call superclass constructor 
+                  Persoon.call(this, sNaam, nLeeftijd, sGeslacht);  
+  
+                  var dNu     = new Date(); 
+                  var nHuidigJaar   = dNu.getFullYear(); 
+  
+                  this.vak     = sVak; 
+                  this.ancienniteit   = nHuidigJaar - nStartJaar; 
+                this.salaris     = this.basiswedde * this.ancienniteit / 10; 
+            }
+            ; 
+ 
+            Instructeur.prototype = new Persoon(); 
+            Instructeur.prototype.basiswedde = 1600; 
+            Instructeur.prototype.verhoogAncienniteit = function (jaar) { 
+                  this.ancienniteit = this.ancienniteit + jaar; 
+            }; 
+            Instructeur.prototype.spreek = function () { 
+                  var sInfo = ",\n ik ben instructeur " + this.vak; 
+                  sInfo += ",\n ik werk reeds " +  this.ancienniteit + " jaar voor de vdab";  
+                  sInfo += ",\n mijn salaris is "  +  this.salaris + "€"; 
+                  console.log(this.info() + sInfo); 
+            };
+
+            //instance
+            var jean = new Instructeur("Jean", 58, "m", "Cobol", 1995 ); 
+            jean.spreek(); 
+
+
+
+            //instanties 
+//            var kurt = new Persoon("Kurt", 49, "m"); 
+//            var ann  = new Persoon("Ann", 51, "v"); 
+//            var inge = new ann.constructor("Inge", 44, "v"); 
+ 
+            //wijzigingen 
+//            ann.moederTaal = "Frans"; 
+//            kurt.leeftijd = 99; 
+ 
+            //methods 
+//            kurt.spreek(); 
+//            ann.spreek(); 
+//            inge.spreek(); 
+//            console.log(ann); 
+//            console.log(kurt); 
+ 
+            //eOutput.innerHTML = enumerateHTML(ann);
             /*++++++++++++++++UITVOEREN+++++++++++++++++++*/
-            paul.functie = "webontwikkelaar";
+//            paul.functie = "webontwikkelaar";
             //delete paul.naam;
             //paul.spreek();
-            console.log(enumerate(paul));
+//            console.log(enumerate(paul));
 
-            var jsonPaul = JSON.stringify(paul);
-            console.log(jsonPaul);
-            var jsonVeerle = JSON.stringify(veerle);
-            console.log(jsonVeerle);
+//            var jsonPaul = JSON.stringify(paul);
+//            console.log(jsonPaul);
+//            var jsonVeerle = JSON.stringify(veerle);
+//            console.log(jsonVeerle);
 
             /*++++++++++++++++FUNCTIES+++++++++++++++++++*/
             function enumerate(obj) {
@@ -115,14 +205,16 @@
 
                 return strProps;
             }
-            eOutput.innerHTML = enumerateHTML(paul);
-            //instanties
-            var kurt = new Persoon("Kurt", 49, "m");
-            var ann = new Persoon("Ann", 51, "v");
-            console.log("ann " + ann.constructor);
-            var inge = new ann.constructor('inge', 33, "v");
-            console.log(inge);
-            //eOutput.innerHTML = enumerateHTML(kurt);
+            //eOutput.innerHTML = enumerateHTML(paul);
+
+            //testen trim
+            var tekst = "         tekst            "; 
+            console.log(tekst); 
+            tekst = tekst.trim(); 
+            console.log(tekst);
+
+
+
 
         </script>
     </body>

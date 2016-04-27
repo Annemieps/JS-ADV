@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <style type="text/css">
+            .output {
+                background-color:#CFC;
+                padding:1em;
+            }
+        </style>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="frameworks/jQuery/jquery-1.12.3.min.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <h1>JS adv project: Auto</h1>
+        <h2>Meer over JS objecten</h2>
+        <div class="output"></div>
+        <script>
+            //De browser werpt dan Exceptions (in de JS console)
+            'use strict';
+            //===========DOM=============
+            var eOutput = document.querySelector('.output');
+            /*++++++++++++++++FUNCTIES+++++++++++++++++++*/
+            function enumerate(obj) {
+                //overloop alle eigenschappen van een object
+                //return String
+                var strProps = "";
+                for (var key in obj) {
+                    if (typeof obj[key] === "object") {
+                        strProps += enumerate(obj[key]);
+                    }
+                    else {
+                        strProps += key + "(" + typeof obj[key] + "): " + obj[key] + "\n";
+                    }
+                    strProps += "</ul>\n";
+                    return strProps;
+                }
+            }
+
+            function enumerateHTML(obj) {
+                //overloop alle eigenschappen van een object
+                //return string voor innerHTML
+                var strProps = "<ul>";
+                for (var key in obj) {
+                    if (typeof obj[key] === "object") {
+                        strProps += "<li>";
+                        strProps += key;
+                        strProps += enumerateHTML(obj[key]);
+                        strProps += "</li>";
+                    }
+                    else {
+                        strProps += "<li>" + key + "(" + typeof obj[key] + "): " + obj[key] +
+                                "</li>\n";
+                    }
+                }
+                strProps += "</ul>\n";
+
+                return strProps;
+            }
+            //**VOORBEELD AUTO**//
+            var auto = { 
+                  merk: "merk", 
+                  type: "type", 
+                  kleur: "neutraal", 
+                  aandrijving: 2, 
+                  toString: function () { 
+                       var sInfo = "ik ben een auto, merk " + this.merk + ", type: " + this.type ; 
+                       sInfo += ", \n" + this.aandrijving + "‐wiels aandrijving"; 
+                       sInfo += ", \nkleur " + this.kleur; 
+                       return sInfo; 
+                   }}; 
+            console.log(auto.toString()); 
+ 
+            var toyota = Object.create(auto); 
+            toyota.merk = "Toyota"; 
+            toyota.kleur = "blauw"; 
+            toyota.type = "Verso"; 
+            console.log(toyota.toString()); 
+ 
+            var kia = Object.create(toyota); 
+            kia.merk = "Kia"; 
+            kia.kleur = "grijs"; 
+            kia.type = "Sorento"; 
+            console.log(kia.toString()); 
+
+            var ferrari = Object.create(auto, 
+                { 
+                merk: {value: "Ferrari", enumerable: true},
+                cylinders: {enumerable: true, writable: true, value : 8},
+                _color: {value: undefined, writable: true}, 
+                kleur: {  
+                    get: function () { 
+                        return this.merk + " " + this._color 
+                    },  
+                    set: function (kleur) {  
+                        if (kleur == 'rood' || kleur == 'geel') {
+                            this._color = kleur;
+                        } 
+                        else {
+                            throw new Error('geen aanvaardbare kleur');
+                        } 
+                    } 
+                } 
+                }); 
+            ferrari.type = "Berlinetta"; 
+            Object.defineProperty(ferrari, "prijs", {value: 275000, enumerable: true}), //toevoegen 
+            //Dit werpt een error op als er een poging gedaan word om de aandrijving te veranderen.
+            Object.defineProperty(ferrari, "aandrijving", {writable: false}), //wijzigen 
+            //ferrari.aandrijving = 6;
+            ferrari.cylinders = 12; 
+            ferrari.kleur = 'geel'; // lukt 
+            //ferrari.kleur = 'groen'; // werpt fout 
+
+            console.log(ferrari.toString()); 
+            console.log(enumerate(ferrari));
+        </script>    
+    </body>
+</html>

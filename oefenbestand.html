@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <style type="text/css">
+            .output {
+                background-color:#CFC;
+                padding:1em;
+            }
+        </style>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="frameworks/jQuery/jquery-1.12.3.min.js" type="text/javascript"></script>
+    </head>
+    <body>
+        <div>TODO write content</div>
+        <div class="output"></div>
+        <script>
+            //De browser werpt dan Exceptions (in de JS console)
+            'use strict';
+            //===========DOM=============
+            var eOutput = document.querySelector('.output');
+
+
+            var oDefaults = { 
+                  type: "driehoek", 
+                  aantalHoeken: 3, 
+                  kleuren: ["blue", "red", "yellow"], 
+                  pos: {x: 0, y: 0, z: 0} 
+            }; 
+            var oSettings = { 
+                  kleuren: ["green", "black"], 
+                  pos: {x: 100, y: 50}, 
+                  auteur: "jan" 
+            }; 
+  
+            /* merge oSettings in oDefault */ 
+            $.extend(true, oDefaults, oSettings); 
+            console.log(JSON.stringify(oDefaults)); 
+
+            var instellingen = $.extend(true, {}, oDefaults, oSettings); 
+            console.log(JSON.stringify(instellingen));
+
+            /*++++++++++++++++FUNCTIES+++++++++++++++++++*/
+            function enumerate(obj) {
+                //overloop alle eigenschappen van een object
+                //return String
+                var strProps = "";
+                for (var key in obj) {
+                    if (typeof obj[key] === "object") {
+                        strProps += enumerate(obj[key]);
+                    }
+                    else {
+                        strProps += key + "(" + typeof obj[key] + "): " + obj[key] + "\n";
+                    }
+                    strProps += "</ul>\n";
+                    return strProps;
+                }
+            }
+
+            function enumerateHTML(obj) {
+                //overloop alle eigenschappen van een object
+                //return string voor innerHTML
+                var strProps = "<ul>";
+                for (var key in obj) {
+                    if (typeof obj[key] === "object") {
+                        strProps += "<li>";
+                        strProps += key;
+                        strProps += enumerateHTML(obj[key]);
+                        strProps += "</li>";
+                    }
+                    else {
+                        strProps += "<li>" + key + "(" + typeof obj[key] + "): " + obj[key] +
+                                "</li>\n";
+                    }
+                }
+                strProps += "</ul>\n";
+
+                return strProps;
+            }
+
+
+            //***planeten
+            /**** Class constructor voert init method uit ****/ 
+            //deze constructor returnt een functie  
+            var Class = function () { 
+                  var klas = function () { 
+                    //we gebruiken apply om dit te doen, anders zijn we de context van this kwijt in init()
+                       this.init.apply(this, arguments);    
+                   }; 
+                //De functie is leeg, de bedoeling is dat die overridden wordt door een subclass. 
+                //Maar uitgevoerd wordt hij altijd
+                  klas.prototype.init = function () {
+                };
+                //shortcut nr prototype 
+                  klas.fn = klas.prototype; 
+                  //shortcut naar class zelf 
+                  klas.fn.parent = klas; 
+                //returned klas function
+                  return klas; 
+              };
+
+            var Planeet = new Class(); 
+            Planeet.fn.init = function (name, massa, diameter) { 
+                  var me = this; 
+                  this.name = name; 
+                  this.massa = massa; //Earth masses 1 ME = 5.9736 × 10^24 kg 
+                  this.diameter = diameter; //km 
+                  this.volume = function () {  
+                        return ((Math.PI / 6) * Math.pow(me.diameter, 3)); 
+                     } () 
+              } 
+            var pluto = new Planeet('Pluto', 0.0021, 2390); 
+            console.log(enumerate(pluto)); 
+            console.log(pluto.volume); 
+        </script>    
+    </body>
+</html>

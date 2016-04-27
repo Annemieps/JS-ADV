@@ -649,4 +649,9 @@ function removeEvent( obj, type, fn ) {
 	  } else
 		obj.removeEventListener( type, fn, false );
 	}
-	
+        
+        
+//---------------------------------------------	
+String.prototype.trim = function () { 
+    return this.replace(/^\s*(\S*(\s+\S+)*)\s*$/, "$1");  
+}; 
