@@ -1,55 +1,143 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<title>JS advanced project: werken met de CANVAS tag</title>
-<style media="screen" type="text/css">
-<!--
-body {
-	font-family:Arial, Helvetica, sans-serif;
-}
-em {
-	font-style:normal;
-	font-weight:bold;
-	color:#906;
-}
-img {
-	float:left
-}
-h3 {
-	clear:both;
-}
-#canvas {
-	position:relative;
-	background-color:#CFF;
-	margin:1em;
-	padding:0;
-	width: 800px;
-	height:600px;
-	border:2px solid silver;
-}
-span.tag {
-	position:absolute;
-	top:0;
-	left:0;
-}
-#output {
-	background-color:#CFC;
-	padding:1em;
-}
--->
-</style>
-<script type="text/javascript">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+        <title>JS advanced project: werken met de CANVAS tag</title>
+        <!--<script src="canvas.js" type="text/javascript"></script>-->
+        <style media="screen" type="text/css">
+            <!--
+            body {
+                font-family:Arial, Helvetica, sans-serif;
+            }
+            em {
+                font-style:normal;
+                font-weight:bold;
+                color:#906;
+            }
+            img {
+                float:left
+            }
+            h3 {
+                clear:both;
+            }
+            #canvas {
+                position:relative;
+                background-color:#CFF;
+                margin:1em;
+                padding:0;
+                width: 800px;
+                height:600px;
+                border:2px solid silver;
+            }
+            span.tag {
+                position:absolute;
+                top:0;
+                left:0;
+            }
+            #output {
+                background-color:#CFC;
+                padding:1em;
+            }
+            -->
+        </style>
+        <script type="text/javascript">
+            window.onload = function () { 
+                var canvas = document.getElementById('canvas'); 
+                //rechthoek(canvas);        
+                cirkel(canvas); 
+            }; 
+ 
+            function rechthoeken(c) { 
+                                var ctx = c.getContext('2d'); 
+                if (ctx) { 
+                    ctx.fillStyle = "yellow";  
+                    ctx.strokeStyle = "#000" ; 
+                    ctx.fillRect (50, 50, 200, 70); //x,y,breedte,hoogte  
+                    ctx.strokeRect (80, 80, 200, 70);  
+                    ctx.clearRect (100, 20, 50, 160);  
+                   } 
+            } 
+            function driehoek(c) { 
+                var ctx = c.getContext('2d'); 
+                ctx.lineWidth = 15; 
+                ctx.lineJoin = "bevel";
+                ctx.strokeStyle = "rgb(200,0,0)";   
+                ctx.fillStyle   = "white";   
+                ctx.beginPath();   
+                ctx.moveTo(400, 100);   
+                ctx.lineTo(300, 250);   
+                ctx.lineTo(500, 250); 
+                ctx.closePath(); 
+                ctx.fill(); 
+                ctx.stroke();   
+  
+              } 
+            function cirkel(c) { 
+                var ctx = c.getContext('2d'); 
+                ctx.lineWidth = 3;    
+                var straal = 100; 
+                var middelpunt_x = 200; 
+                var middelpunt_y = 200;  
+                  //ctx.beginPath();   
+                  //ctx.arc(middelpunt_x, middelpunt_y, straal, 0, Math.PI * 2, true); //volledige cirkel 
+                  //ctx.stroke();   
+                var waarden   = [55, 22, 106]; 
+                var totaal   = eval(waarden.join("+")); 
+                var kleuren   = ["red", "blue", "green"]; 
+                var pi    = Math.PI; 
+                var starthoek  = 0; 
+                var eindhoek   = 0;  
+  
+                for (var i = 0; i < waarden.length; i++) { 
+                                        booglengte   = (waarden[i] / totaal) * pi * 2; 
+                    eindhoek   = starthoek + booglengte; 
+                    ctx.beginPath(); 
+                    //ctx.strokeStyle = kleuren[i]; 
+                    ctx.fillStyle  = kleuren[i];
+                    ctx.arc(middelpunt_x, middelpunt_y, straal, starthoek, eindhoek, false); 
+                    ctx.lineTo(middelpunt_x, middelpunt_y);
+                    ctx.stroke(); 
+                    ctx.fill();
+                    starthoek = eindhoek; 
+                }
+                function schrijf(c) { 
+                      var ctx   = c.getContext('2d'); 
+                      var tekst   = "vdab"; 
+  
+                      var x     = 100; 
+                      var y   = 100; 
+  
+                      var R   = 60; 
+                      var G   = 100; 
+                      var B   = 180; 
+    
+                      var rgb = function (r, g, b) { 
+                           return "rgb(" + r + "," + g + "," + b + ")";  
+                    } 
+    
+                      if (ctx) { 
+                           ctx.font     = "italic 120px Arial, sans serif"; 
+                           ctx.strokeStyle  = "black";  
+                           ctx.fillStyle    = rgb(R, G, B); 
+                           ctx.strokeText(tekst, x, y); 
+                           //ctx.fillText(tekst,x,y); 
+    
+                       } 
+    
+              }}
+        </script>
 
-</script>
-</head>
+    </head>
 
-<body>
-<h1>JS adv project: werken met de <code>canvas</code> tag</h1>
+    <body>
+        <h1>JS adv project: werken met de <code>canvas</code> tag</h1>
 
 
-<canvas id="canvas"><p>deze pagina bevat een <code>canvas</code> tag (HTML5)<br />
-uw browser kan deze tag niet weergeven.</p></canvas> 
+        <canvas id="canvas" width="800px" height="600px">
+            <p>deze pagina bevat een <code>canvas</code> tag (HTML5)<br />
+                uw browser kan deze tag niet weergeven.</p>
+        </canvas> 
 
-</body>
+
+    </body>
 </html>
