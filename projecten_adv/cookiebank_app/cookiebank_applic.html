@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JS adv project: cookieBank Applicatie</title>
-
+<!--Bootstrap -->
 <!--<link rel="stylesheet" href="../frameworks/bootstrap/css/bootstrap.min.css">-->
 <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -15,7 +15,13 @@
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<!--Jquery -->
+<script src="../../frameworks/jQuery/jquery-1.12.3.min.js" type="text/javascript"></script>
+<!--Jquery cookie-->
+<script src="../../frameworks/jquery-cookie/jquery.cookie.js" type="text/javascript"></script>
 
+<!--Javascript-->
+<script src="cookiebank_app.js" type="text/javascript"></script>
 <style media="screen" type="text/css">
 header {
 	padding:3em 0 2em 0;
@@ -46,7 +52,10 @@ footer {
 }
 
 </style>
-
+<script>
+//cookiebank test
+console.log(cookieBank.init());
+</script>
 </head>
 <body>
 <header>
@@ -174,9 +183,7 @@ footer {
       <p>Copyright <a href="http://twitter.com/mdo" target="_blank">Cookiebank@vdab.be</a></p>
     </div>
   </footer>
-  <script src="../frameworks/jquery/jquery-1.10.2.min.js"></script> 
-  <script src="../frameworks/bootstrap/js/bootstrap.min.js"></script> 
-  <script src="../frameworks/jquery/jquery-cookie/jquery.cookie.js"></script> 
+
 </div>
 </body>
 </html>
